@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { nanoid } from 'nanoid';
 import { getContacts } from 'redux/selectors';
 import { addContact } from 'redux/contactsSlice';
-import { nanoid } from 'nanoid';
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
-  const dispatch = useDispatch();
+  // підписуємся на стейт useSelector( state => state.postData.post )
   const contacts = useSelector(getContacts);
+  // імпортуємо "вантажівку-кур'єра"
+  const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
@@ -28,6 +30,8 @@ export const ContactForm = () => {
 
   const onAddContact = event => {
     event.preventDefault();
+
+    // перевірка на введення імені яке вже є в масиві контактів
     if (
       contacts.some(
         el => el.name.toLowerCase().trim() === name.toLowerCase().trim()
@@ -37,19 +41,21 @@ export const ContactForm = () => {
       formReset();
       return;
     }
-  
+    
+    // відправляєм "вантажівку-кур'єра" з інструкцією (поля тип-назва кабінету, необовьязкове поле пейлоад-новий стейт)
     dispatch(addContact({ name, number, id: nanoid() }));
+    // теж-сае: dispatch({ type: "contacts/addContact", payload: { name, number, id: nanoid() } });
 
     formReset();
   };
 
+  // очищєння форми
   const formReset = () => {
     setName('');
     setNumber('');
   };
 
   return (
-    
     <form className={css.form} onSubmit={onAddContact}>
       <label>Name </label>
       <input

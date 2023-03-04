@@ -16,14 +16,24 @@ const contactsSlice = createSlice({
   // Початковий стан редюсера слайсу
   initialState,
 
-  // Об'єкт редюсерів - функцій-інструкцій які отримують state і action та змінюють цей state
+  // Об'єкт редюсерів - функцій-інструкцій які змінюють state. Отримують state і action та змінюють цей state
   reducers: {
-    addContact(state, { payload }) { state.items = [...state.items, payload] },
-    deleteContact(state, { payload }) { state.items = state.items.filter(item => item.id !== payload) },
+    // модифікуєм state.items вкладаючи в ного масив в який розбираєм попередній ...state.items і нов. зн. payload
+    addContact(state, action) {
+      // console.log('action >>', action);
+      state.items = [...state.items, action.payload];
+    },
+    deleteContact(state, { payload }) {
+      console.log('payload', payload);
+      state.items = state.items.filter(item => item.id !== payload);
+    },
   },
 });
 
-// Генератори екшенів
+// Генератор екшенів-інструкцій. В contactsSlice.actions автоматично генеруються інструкції з іменами ідентичними reducers
+// Інструкція об'єкт має поле тип і може мати поле пейлоад
+// інструкції addContact, deleteContact (кожна з яких опрацьовується в своєму кабінеті вищє)
 export const { addContact, deleteContact } = contactsSlice.actions;
-// Редюсер слайсу
+
+// Налаштований редюсер слайсу який опрацьовує інструкції addContact, deleteContact (підрозділ який має багато кабінетів)
 export const contactsReducer = contactsSlice.reducer;
