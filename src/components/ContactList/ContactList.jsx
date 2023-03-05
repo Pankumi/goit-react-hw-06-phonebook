@@ -5,31 +5,28 @@ import { deleteContact } from 'redux/contactsSlice';
 import css from './ContactList.module.css';
 
 export const ContactList = () => {
+  // getFilteredContacts = contacts.filter( contact => contact.name.toLowerCase().includes(filter.toLowerCase()) )
   const contacts = useSelector(getFilteredContacts);
   const dispatch = useDispatch();
 
   return (
-    <>
-      <div>
-        <ul>
-          {contacts.map(contact => (
-            <li key={contact.id} className={css.contactItem}>
-              <div>
-                <span>{contact.name} : </span>
-                <span>{contact.number}</span>
-              </div>
-              <button
-                type="button"
-                className={css.btnItem}
-                onClick={() => dispatch(deleteContact(contact.id))}
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </>
+    <ul>
+      {contacts.map(contact => (
+        <li key={contact.id} className={css.contactItem}>
+          <div>
+            <span>{contact.name} : </span>
+            <span>{contact.number}</span>
+          </div>
+          <button
+            type="button"
+            className={css.btnItem}
+            onClick={() => dispatch(deleteContact(contact.id))}
+          >
+            Delete
+          </button>
+        </li>
+      ))}
+    </ul>
   );
 };
 

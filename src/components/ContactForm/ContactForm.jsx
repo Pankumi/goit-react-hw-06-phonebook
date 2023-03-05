@@ -6,28 +6,29 @@ import { addContact } from 'redux/contactsSlice';
 import css from './ContactForm.module.css';
 
 export const ContactForm = () => {
-  // підписуємся на стейт useSelector( state => state.postData.post )
+  // підписуємся на стейт useSelector( state => state.contacts.items; )
   const contacts = useSelector(getContacts);
+
   // імпортуємо "вантажівку-кур'єра"
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
+  // зберігаєм ввод поля в стейт компонента
   const handleInputChange = event => {
     const { name, value } = event.target;
-
     if (name === 'name') {
       setName(value);
       return;
     }
-
     if (name === 'number') {
       setNumber(value);
       return;
     }
   };
 
+  // зберігаєм сабміт форми в стейт додатка
   const onAddContact = event => {
     event.preventDefault();
 
@@ -41,7 +42,7 @@ export const ContactForm = () => {
       formReset();
       return;
     }
-    
+
     // відправляєм "вантажівку-кур'єра" з інструкцією (поля тип-назва кабінету, необовьязкове поле пейлоад-новий стейт)
     dispatch(addContact({ name, number, id: nanoid() }));
     // теж-сае: dispatch({ type: "contacts/addContact", payload: { name, number, id: nanoid() } });
